@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Todo.Data;
 using VueCliMiddleware;
 
 namespace ToDo
@@ -21,6 +22,11 @@ namespace ToDo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            
+            services.AddDbContext<TodoContext>(option => {
+                option.UseSqlServer(Configuration.GetConnectionString("todoConnection"));
+            });
+
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "clientapp";
